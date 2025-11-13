@@ -10,6 +10,10 @@ name = ""
 email = ""
 age = 0
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route("/")
 def home():
     return "Welcome to the homepage!"
