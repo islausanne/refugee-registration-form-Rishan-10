@@ -56,7 +56,7 @@ def submit():
     session.pop('message', None)
     session.pop('age', None)
 
-    flash(f"Thank you, {name}. Your email address is {email}. You are {age} years old. Your message has been submitted.")
+    flash('Thank you for registering!')
     return redirect(url_for('form'))
 
 if __name__ == '__main__':

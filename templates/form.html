@@ -1,28 +1,21 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
 <html lang="en">
     <body>
         <img src="static/refugee_form_logo.jpeg" alt="Logo" style="width:10%;height:10%;">
         <h1>Refugee Registration Form</h1>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                {% for message in messages %}
-                    <li style="color:red;">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
-
         <form action="/submit" method="POST">
+            <h2>Personal Information</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" value="{{ session.get('name', '') }}"><br><br>
 
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" value="{{ session.get('email', '') }}"><br><br>
-
             <label for="age">Age:</label>
             <input type="number" id="age" name="age" value="{{ session.get('age', '') }}"><br><br>
+
+            <h2>Contact Information</h2>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" value="{{ session.get('email', '') }}"><br><br>
 
             <label for="message">Message:</label><br>
             <textarea id="message" name="message" rows="4" cols="50">{{ session.get('message', '') }}</textarea><br><br>
@@ -31,3 +24,4 @@
         </form>
     </body>
 </html>
+{% endblock %}
