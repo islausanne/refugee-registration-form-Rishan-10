@@ -8,7 +8,8 @@ EMAIL_REGEX = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
 name = ""
 email = ""
-age = 0
+date_of_birth = ""
+country = ""
 
 @app.route('/')
 def index():
@@ -27,13 +28,15 @@ def submit():
     global name, email, age
     name = request.form['name']
     email = request.form['email']
-    age = int(request.form['age'])
+    date_of_birth = request.form['date_of_birth']
+    country = request.form['country']
     message = request.form['message']
 
     session['name'] = name
     session['email'] = email
     session['message'] = message
-    session['age'] = age
+    session['date_of_birth'] = date_of_birth
+    session['country'] = country
 
     if not name or not email or not message or not age:
         flash('All fields are required!')
@@ -54,7 +57,8 @@ def submit():
     session.pop('name', None)
     session.pop('email', None)
     session.pop('message', None)
-    session.pop('age', None)
+    session.pop('date_of_birth', None)
+    session.pop('country', None)
 
     flash('Thank you for registering!')
     return redirect(url_for('form'))
