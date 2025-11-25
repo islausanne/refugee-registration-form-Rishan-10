@@ -1,10 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for, flash, session
-import re
+import json
+import os
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'DarthVader10_'
-
-EMAIL_REGEX = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
 name = ""
 email = ""
@@ -31,27 +31,17 @@ def submit():
     date_of_birth = request.form['date_of_birth']
     country = request.form['country']
     message = request.form['message']
+    gender = request.form['gender']
 
     session['name'] = name
     session['email'] = email
     session['message'] = message
     session['date_of_birth'] = date_of_birth
     session['country'] = country
+    session['gender'] = gender
 
-    if not name or not email or not message or not age:
+    if not name or not email or not date_of_birth or not country or not gender:
         flash('All fields are required!')
-        return redirect(url_for('form'))
-
-    if not re.match(EMAIL_REGEX, email):
-        flash('Please enter a valid email address.')
-        return redirect(url_for('form'))
-
-    if len(message) < 10:
-        flash('Message must be at least 10 characters long.')
-        return redirect(url_for('form'))
-
-    if age < 0:
-        flash('Age must be greater than zero.')
         return redirect(url_for('form'))
 
     session.pop('name', None)

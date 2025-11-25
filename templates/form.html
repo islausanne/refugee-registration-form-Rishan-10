@@ -1,20 +1,76 @@
 {% extends 'base.html' %}
 {% block content %}
 <html lang="en">
-    <body>
+    <head>
+        <style>
+            input:invalid, textarea:invalid, select:invalid {
+                border: 2px solid red;
+            }
+
+            input:valid, textarea:valid, select:valid {
+                border: 2px solid green;
+            }
+        </style>
+    </head>
+    <center>
+    <body bgcolor="#edf2f5">
         <img src="static/refugee_form_logo.jpeg" alt="Logo" style="width:10%;height:10%;">
-        <h1>Refugee Registration Form</h1>
+        <h1 style="color:#1c7ce2;">Refugee Registration Form</h1>
 
         <form action="/submit" method="POST">
-            <h2>Personal Information</h2>
+            <script> <!-- THIS IS FOR NAME VALIDATION (JAVASCRIPT) -->
+                const nameField = document.getElementById('name');
+                const nameError = document.getElementById('name-error');
+
+                nameField.addEventListener('input', () => {
+                  const value = nameField.value.trim();
+                  if (value === '') {
+                    nameField.setCustomValidity("Name cannot be empty or spaces only");
+                    nameError.textContent = "Name cannot be empty or spaces only";
+                  } else {
+                    nameField.setCustomValidity("");
+                    nameError.textContent = "";
+                  }
+                });
+                </script>
+                <script> <!-- THIS IS FOR DATE VALIDATION (NOT IN THE FUTURE) (JAVASCRIPT) -->
+                    const dateField = document.getElementById('date');
+                    const dateError = document.getElementById('date-error');
+
+                    dateField.addEventListener('input', () => {
+                      const today = new Date();
+                      const selectedDate = new Date(dateField.value);
+
+                      if (selectedDate > today) {
+                        dateField.setCustomValidity("Date of Birth cannot be in the future");
+                        dateError.textContent = "Date of Birth cannot be in the future";
+                      } else {
+                        dateField.setCustomValidity("");
+                        dateError.textContent = "";
+                      }
+                    });
+                </script>
+
+            <h2 style="color:#1c7ce2;">Personal Information</h2>
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{ session.get('name', '') }}"><br><br>
+            <input type="text" id="name" name="name" value="{{ session.get('name', '') }}" required><br><br>
+            <p id = "name-error"></p>
 
-            <label for="date_of_birth">Date of Birth</label>
-            <p><input type="date" name="date_of_birth" id="date_of_birth" required></p>
+            <label for="date_of_birth" >Date of Birth:</label>
+            <input type="date" name="date_of_birth" id="date_of_birth" value="{{ session.get('date_of_birth', '') }}" required><br><br>
 
-            <select class="form-select" autocomplete="country" id="country" name="country">
-                <option>select country</option>
+            <label for="gender">Gender:</label>
+            <select class="form-select" autocomplete="gender" id="gender" name="gender" required>
+                <option selected disabled value="">Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select><br><br>
+
+            <label for="country">Nationality:</label>
+            <select class="form-select" autocomplete="country" id="country" name="country" required>
+                <option selected disabled value="">Country</option>
                 <option value="AF">Afghanistan</option>
                 <option value="AX">Åland Islands</option>
                 <option value="AL">Albania</option>
@@ -269,9 +325,12 @@
                 <option value="ZW">Zimbabwe</option>
             </select>
 
-            <h2>Contact Information</h2>
+            <h2 style="color:#1c7ce2;">Contact Information</h2>
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" value="{{ session.get('email', '') }}"><br><br>
+            <input type="email" id="email" name="email" value="{{ session.get('email', '') }}" required><br><br>
+
+            <label for="phone">Phone:</label>
+            <input type="phone" id="phone" name="phone" value="{{ session.get('phone', '') }}" required><br><br>
 
             <label for="message">Message:</label><br>
             <textarea id="message" name="message" rows="4" cols="50">{{ session.get('message', '') }}</textarea><br><br>
@@ -279,5 +338,6 @@
             <input type="submit" value="Submit">
         </form>
     </body>
+    </center>
 </html>
 {% endblock %}
