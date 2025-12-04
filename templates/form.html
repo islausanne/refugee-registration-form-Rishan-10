@@ -38,6 +38,7 @@
 
             <label for="location">Location:</label>
             <input type="text" name="location" id="location" value="{{ session.get('location', '') }}" required><br><br>
+            <p id = "location-error"></p>
 
             <label for="country">Nationality:</label>
             <select class="form-select" autocomplete="country" id="country" name="country" required>
@@ -590,6 +591,25 @@
                   }
                 });
                 </script>
+
+        <script> <!-- THIS IS FOR LOCATION VALIDATION (JAVASCRIPT) -->
+                const locationField = document.getElementById('location');
+                const locationError = document.getElementById('location-error');
+
+                locationError.style.color = "red";
+
+                locationField.addEventListener('input', () => {
+                  const value = nameField.value.trim();
+                  if (value === '') {
+                    locationField.setCustomValidity("Location cannot be empty or spaces only");
+                    locationError.textContent = "Location cannot be empty or spaces only";
+                  } else {
+                    locationField.setCustomValidity("");
+                    locationError.textContent = "";
+                  }
+                });
+                </script>
+
         <script> <!-- THIS IS FOR DATE VALIDATION (NOT IN THE FUTURE) (JAVASCRIPT) -->
                 const dateField = document.getElementById('date_of_birth');
                 const dateError = document.getElementById('date-error');

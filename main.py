@@ -49,12 +49,18 @@ def submit():
     session['medical_needs'] = medical_needs
     session['other_needs'] = other_needs
 
+    print(date_of_birth)
+
     if not name or not email or not date_of_birth or not country or not gender or not phone_number or not phone_number_2 or not location:
         flash('All fields are required!')
         return redirect(url_for('form'))
 
     if len(full_phone_number) < 7 or len(full_phone_number) > 15:
         flash('Phone number must be between 7 and 15 digits!')
+        return redirect(url_for('form'))
+
+    if int(date_of_birth[:4]) < 1900:
+        flash('Date of birth must be after 1900!')
         return redirect(url_for('form'))
 
     session.pop('name', None)
